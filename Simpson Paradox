@@ -1,0 +1,245 @@
+### A Pluto.jl notebook ###
+# v0.11.14
+
+using Markdown
+using InteractiveUtils
+
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
+# ╔═╡ bc9421a8-fce2-11ea-0ebc-c35f34791a20
+begin
+	using Pkg 
+	
+	Pkg.add("Formatting")
+	Pkg.add("PlutoUI")
+	
+	using Formatting
+	using PlutoUI
+end
+
+# ╔═╡ 8517acd4-fcdd-11ea-1d84-892550fc2b33
+begin
+	NF_Bart_made_1ˢᵗ = @bind Bart_made_1ˢᵗ html"<input type=number min=0 max=9 step=1 value=5>"
+	
+	NF_Bart_miss_1ˢᵗ = @bind Bart_miss_1ˢᵗ html"<input type=number min=0 max=9 step=1 value=4>"
+	
+	NF_Lisa_made_1ˢᵗ = @bind Lisa_made_1ˢᵗ html"<input type=number min=0 max=9 step=1 value=1>"
+	
+	NF_Lisa_miss_1ˢᵗ = @bind Lisa_miss_1ˢᵗ html"<input type=number min=0 max=9 step=1 value=1>"
+	
+	
+	NF_Bart_made_2ⁿᵈ = @bind Bart_made_2ⁿᵈ html"<input type=number min=0 max=9 step=1 value=5>"
+	
+	NF_Bart_miss_2ⁿᵈ = @bind Bart_miss_2ⁿᵈ html"<input type=number min=0 max=9 step=1 value=3>"
+	
+	NF_Lisa_made_2ⁿᵈ = @bind Lisa_made_2ⁿᵈ html"<input type=number min=0 max=9 step=1 value=8>"
+	
+	NF_Lisa_miss_2ⁿᵈ = @bind Lisa_miss_2ⁿᵈ html"<input type=number min=0 max=9 step=1 value=5>"
+	
+	md"""	 
+	
+	1ˢᵗ Half:
+	
+	Bart: made: $(NF_Bart_made_1ˢᵗ)		
+	missed: $(NF_Bart_miss_1ˢᵗ)
+	
+	
+	Lisa: made: $(NF_Lisa_made_1ˢᵗ)		
+	missed: $(NF_Lisa_miss_1ˢᵗ)
+	
+	 
+	 
+	
+	2ⁿᵈ Half:
+	
+	Bart: made: $(NF_Bart_made_2ⁿᵈ)		
+	missed: $(NF_Bart_miss_2ⁿᵈ)
+	
+	
+	Lisa: made: $(NF_Lisa_made_2ⁿᵈ)		
+	missed: $(NF_Lisa_miss_2ⁿᵈ)
+	
+	"""
+end
+
+# ╔═╡ 88076c06-fce2-11ea-39c2-0b863ece3e00
+
+
+# ╔═╡ f006b094-fce4-11ea-3241-715520143a3e
+
+
+# ╔═╡ e3e671c8-fce4-11ea-23a7-67c7585cdcbc
+html" <br><br><br><br><br> "
+
+# ╔═╡ d9bfa584-fce4-11ea-25ca-077ce7a6d6a3
+md"###### Miscellaneous useful functions"
+
+# ╔═╡ d4d2b842-fce4-11ea-0150-4d40a7ed9962
+function mpad(obj, width::Int)
+	
+	if typeof(obj) <: Number
+		text = string(obj)
+	elseif typeof(obj) <: String
+		text = obj
+	else
+		throw(ArgumentError("object type unusable."))
+	end
+		
+	
+	 
+	if length(text) > width
+		msg = "\n\n\n" *
+			  "             ┌──────────────┐\n" *
+			  "             │ ᴴᵉʳᵉ ᵇᵉ ʷʰᵉʳᵉ│\n" *
+			  "             │ʸᵒᵘ ˢᶜʳᵉʷᵉᵈ ᵘᵖ│\n" *
+			  "             └──────────────┘\n" *
+			  "            /                \n" *
+			  "         😃                  \n" *
+			  "              length(text) ᵇᵉ ᵐᵒʳᵉ width\n" *
+			  "                          ↓\n" *
+			  "        function cpad(text::String, width::Int)\n\n\n"
+
+		throw(DomainError(msg))
+	end
+
+	pad_totl = width - length(text)
+	pad_left = pad_totl ÷ 2
+	pad_rght = pad_totl - pad_left
+
+
+	return " "^pad_left * text * " "^pad_rght
+	 
+end
+
+# ╔═╡ b18c3054-fce0-11ea-074f-27c9051cda55
+begin
+	
+	Bart_attempts_1ˢᵗ = Bart_made_1ˢᵗ + Bart_miss_1ˢᵗ
+	Bart_accuracy_pct_1ˢᵗ = 100.0 * Bart_made_1ˢᵗ / Bart_attempts_1ˢᵗ
+	
+	Lisa_attempts_1ˢᵗ = Lisa_made_1ˢᵗ + Lisa_miss_1ˢᵗ
+	Lisa_accuracy_pct_1ˢᵗ = 100.0 * Lisa_made_1ˢᵗ / Lisa_attempts_1ˢᵗ
+	
+	
+	if Bart_accuracy_pct_1ˢᵗ > Lisa_accuracy_pct_1ˢᵗ
+		summary_1ˢᵗ = "Bart was more accurate in the first half."
+	elseif Bart_accuracy_pct_1ˢᵗ < Lisa_accuracy_pct_1ˢᵗ
+		summary_1ˢᵗ = "Lisa was more accurate in the first half."
+	else
+		summary_1ˢᵗ = "They were equally accurate in the first half."
+	end
+		
+	
+	
+	
+	Bart_attempts_2ⁿᵈ = Bart_made_2ⁿᵈ + Bart_miss_2ⁿᵈ
+	Bart_accuracy_pct_2ⁿᵈ = 100.0 * Bart_made_2ⁿᵈ / Bart_attempts_2ⁿᵈ
+	
+	Lisa_attempts_2ⁿᵈ = Lisa_made_2ⁿᵈ + Lisa_miss_2ⁿᵈ
+	Lisa_accuracy_pct_2ⁿᵈ = 100.0 * Lisa_made_2ⁿᵈ / Lisa_attempts_2ⁿᵈ
+	
+	
+	if Bart_accuracy_pct_2ⁿᵈ > Lisa_accuracy_pct_2ⁿᵈ
+		summary_2ⁿᵈ = "Bart was more accurate in the second half."
+	elseif Bart_accuracy_pct_2ⁿᵈ < Lisa_accuracy_pct_2ⁿᵈ
+		summary_2ⁿᵈ = "Lisa was more accurate in the second half."
+	else
+		summary_2ⁿᵈ = "They were equally accurate in the second half."
+	end
+	
+	
+	
+	Bart_made_game = Bart_made_1ˢᵗ + Bart_made_2ⁿᵈ
+	Bart_attempts_game = Bart_attempts_1ˢᵗ + Bart_attempts_2ⁿᵈ
+	
+	Bart_accuracy_pct_game = 100.0 * Bart_made_game / Bart_attempts_game
+	
+	
+	Lisa_made_game = Lisa_made_1ˢᵗ + Lisa_made_2ⁿᵈ
+	Lisa_attempts_game = Lisa_attempts_1ˢᵗ + Lisa_attempts_2ⁿᵈ
+	
+	Lisa_accuracy_pct_game = 100.0 * Lisa_made_game / Lisa_attempts_game
+	
+	if Bart_accuracy_pct_game > Lisa_accuracy_pct_game
+		summary_game = "Bart was more accurate in the game."
+	elseif Bart_accuracy_pct_game < Lisa_accuracy_pct_game
+		summary_game = "Lisa was more accurate in the game."
+	else
+		summary_game = "They were equally accurate in the game."
+	end
+		
+	
+	
+	
+	Ba1_fmd = format(Bart_accuracy_pct_1ˢᵗ, precision=3) * "%"
+	La1_fmd = format(Lisa_accuracy_pct_1ˢᵗ, precision=3) * "%"
+	
+	Ba2_fmd = format(Bart_accuracy_pct_2ⁿᵈ, precision=3) * "%"
+	La2_fmd = format(Lisa_accuracy_pct_2ⁿᵈ, precision=3) * "%"
+	
+	
+	Bag_fmd = format(Bart_accuracy_pct_game, precision=3) * "%"
+	Lag_fmd = format(Lisa_accuracy_pct_game, precision=3) * "%"
+	
+	
+	
+	wid_B1 = length(string(Bart_attempts_1ˢᵗ))
+	wid_L1 = length(string(Lisa_attempts_1ˢᵗ))
+	
+	wid_B2 = length(string(Bart_attempts_2ⁿᵈ))
+	wid_L2 = length(string(Lisa_attempts_2ⁿᵈ))
+	
+	wid_Bg = length(string(Bart_attempts_game))
+	wid_Lg = length(string(Lisa_attempts_game))
+	
+	
+	text = "First Half:\n\n\n" *
+	       "      " * mpad(Bart_made_1ˢᵗ, wid_B1) * "\n" *
+	       "Bart: " * rpad("─"^wid_B1, 5) * "=   " * Ba1_fmd * "\n" *
+	       "      " * mpad(Bart_attempts_1ˢᵗ, wid_B1) * "\n\n\n" *
+	
+	       "      " * mpad(Lisa_made_1ˢᵗ, wid_L1) * "\n" *
+	       "Lisa: " * rpad("─"^wid_L1, 5) * "=   " * La1_fmd * "\n" *
+	       "      " * mpad(Lisa_attempts_1ˢᵗ, wid_L1) * "\n\n\n\n" * 
+		   summary_1ˢᵗ * "\n"^4	*
+	
+	
+	       "Second Half:\n\n\n" *
+	       "      " * mpad(Bart_made_2ⁿᵈ, wid_B2) * "\n" *
+	       "Bart: " * rpad("─"^wid_B2, 5) * "=   " * Ba2_fmd * "\n" *
+	       "      " * mpad(Bart_attempts_2ⁿᵈ, wid_B2) * "\n\n\n" *
+	
+	       "      " * mpad(Lisa_made_2ⁿᵈ, wid_L2) * "\n" *
+	       "Lisa: " * rpad("─"^wid_L2, 5) * "=   " * La2_fmd * "\n" *
+	       "      " * mpad(Lisa_attempts_2ⁿᵈ, wid_L2) * "\n\n\n\n" *
+		   summary_2ⁿᵈ * "\n"^6 *
+	
+	       "Game:\n\n\n" *
+	       "      " * mpad(Bart_made_game, wid_Bg) * "\n" *
+	       "Bart: " * rpad("─"^wid_Bg, 5) * "=   " * Bag_fmd * "\n" *
+	       "      " * mpad(Bart_attempts_game, wid_Bg) * "\n\n\n" *
+	
+	       "      " * mpad(Lisa_made_game, wid_Lg) * "\n" *
+	       "Lisa: " * rpad("─"^wid_Lg, 5) * "=   " * Lag_fmd * "\n" *
+	       "      " * mpad(Lisa_attempts_game, wid_Lg) * "\n\n\n\n" *
+	       summary_game
+	
+	@bind output TextField((83, 25), text) 				          
+end
+
+# ╔═╡ Cell order:
+# ╠═bc9421a8-fce2-11ea-0ebc-c35f34791a20
+# ╟─8517acd4-fcdd-11ea-1d84-892550fc2b33
+# ╠═88076c06-fce2-11ea-39c2-0b863ece3e00
+# ╠═b18c3054-fce0-11ea-074f-27c9051cda55
+# ╟─f006b094-fce4-11ea-3241-715520143a3e
+# ╟─e3e671c8-fce4-11ea-23a7-67c7585cdcbc
+# ╟─d9bfa584-fce4-11ea-25ca-077ce7a6d6a3
+# ╟─d4d2b842-fce4-11ea-0150-4d40a7ed9962
